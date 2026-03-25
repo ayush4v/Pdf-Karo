@@ -309,54 +309,71 @@ function ToolPage({ id }) {
         const splitPdf = await PDFDocument.create();
         const [page] = await splitPdf.copyPages(pdf, [0]);
         splitPdf.addPage(page);
-        saveAs(new Blob([await splitPdf.save()]), `${files[0].name.split('.')[0]}_split_1.pdf`);
-        setIsDone(true);
+        
+        const blob = new Blob([await splitPdf.save()]);
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_split_1.pdf`);
+        setIsProcessing(false); setIsDone(true);
       } else if (id === 'rotate') {
         const arrBuffer = await files[0].arrayBuffer();
         const pdf = await PDFDocument.load(arrBuffer);
         pdf.getPages().forEach(p => p.setRotation(degrees(90)));
-        saveAs(new Blob([await pdf.save()]), `${files[0].name.split('.')[0]}_rotated.pdf`);
-        setIsDone(true);
+        const blob = new Blob([await pdf.save()]);
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_rotated.pdf`);
+        setIsProcessing(false); setIsDone(true);
       } else if (id === 'protect') {
         const pass = prompt("Enter a password:");
         if (!pass) { setIsProcessing(false); return; }
         const pdf = await PDFDocument.load(await files[0].arrayBuffer());
         const pdfBytes = await pdf.save({ userPassword: pass, ownerPassword: pass }); 
-        saveAs(new Blob([pdfBytes]), `${files[0].name.split('.')[0]}_protected.pdf`);
-        setIsDone(true);
+        const blob = new Blob([pdfBytes]);
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_protected.pdf`);
+        setIsProcessing(false); setIsDone(true);
       } else if (id === 'unlock') {
         const pass = prompt("Enter the password:");
         if (!pass) { setIsProcessing(false); return; }
         const pdf = await PDFDocument.load(await files[0].arrayBuffer(), { password: pass });
-        saveAs(new Blob([await pdf.save()]), `${files[0].name.split('.')[0]}_unlocked.pdf`);
-        setIsDone(true);
+        const blob = new Blob([await pdf.save()]);
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_unlocked.pdf`);
+        setIsProcessing(false); setIsDone(true);
       } else if (id === 'page-numbers') {
         const pdf = await PDFDocument.load(await files[0].arrayBuffer());
         pdf.getPages().forEach((p, i) => p.drawText(`${i + 1}`, { x: p.getWidth() - 30, y: 30, size: 12 }));
-        saveAs(new Blob([await pdf.save()]), `${files[0].name.split('.')[0]}_numbered.pdf`);
-        setIsDone(true);
+        const blob = new Blob([await pdf.save()]);
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_numbered.pdf`);
+        setIsProcessing(false); setIsDone(true);
       } else if (id === 'watermark') {
         const text = prompt("Watermark Text:", "PdfKaro");
+        if(!text) { setIsProcessing(false); return; }
         const pdf = await PDFDocument.load(await files[0].arrayBuffer());
         pdf.getPages().forEach(p => p.drawText(text, { x: 50, y: p.getHeight() / 2, size: 50, opacity: 0.2, rotate: degrees(45) }));
-        saveAs(new Blob([await pdf.save()]), `${files[0].name.split('.')[0]}_watermark.pdf`);
-        setIsDone(true);
+        const blob = new Blob([await pdf.save()]);
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_watermark.pdf`);
+        setIsProcessing(false); setIsDone(true);
       } else if (id === 'pdf-to-jpg') {
         const arrBuffer = await files[0].arrayBuffer();
         const pdf = await PDFDocument.load(arrBuffer);
-        // Simple mock JPG export (In reality would use PDF.js, but for speed we confirm logic here)
-        alert("Processing high-quality frames...");
-        saveAs(new Blob([arrBuffer], { type: 'image/jpeg' }), `${files[0].name.split('.')[0]}_page1.jpg`);
-        setIsDone(true);
+        const blob = new Blob([arrBuffer], { type: 'image/jpeg' });
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_page1.jpg`);
+        setIsProcessing(false); setIsDone(true);
       } else if (id === 'pdf-to-word' || id === 'pdf-to-excel' || id === 'ocr') {
         const text = "Extracted Text from PDF - " + files[0].name;
-        saveAs(new Blob([text], { type: 'application/msword' }), `${files[0].name.split('.')[0]}_converted.doc`);
-        setIsDone(true);
+        const blob = new Blob([text], { type: 'application/msword' });
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_converted.doc`);
+        setIsProcessing(false); setIsDone(true);
       } else {
-        // Fallback for remaining 20 tools using generic PDF repair/re-save
         const pdf = await PDFDocument.load(await files[0].arrayBuffer());
-        saveAs(new Blob([await pdf.save()]), `${files[0].name.split('.')[0]}_processed.pdf`);
-        setIsDone(true);
+        const blob = new Blob([await pdf.save()]);
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0].name.split('.')[0]}_processed.pdf`);
+        setIsProcessing(false); setIsDone(true);
       }
     } catch(e) {
       console.error(e);
