@@ -447,8 +447,8 @@ function ToolPage({ id }) {
                 <p>Check the preview below. No more cut images!</p>
 
                 {/* PDF Live Preview Area */}
-                <div className="pdf-preview-container" style={{ margin: '1.5rem 0', background: '#0a0a0a', border: '1px solid #333', borderRadius: '16px', overflow: 'hidden' }}>
-                   <div style={{ padding: '8px', background: '#111', fontSize: '12px', color: '#888' }}>Live PDF Preview (Page 1)</div>
+                <div className="pdf-preview-container" style={{ margin: '1.5rem 0', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', overflow: 'hidden' }}>
+                   <div style={{ padding: '8px', background: '#f8fafc', fontSize: '12px', color: '#64748b', borderBottom: '1px solid #e2e8f0' }}>Live PDF Preview (Page 1)</div>
                    <canvas id="pdf-preview-canvas" style={{ width: '100%', height: 'auto', display: 'block' }}></canvas>
                 </div>
                 

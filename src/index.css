@@ -1,22 +1,22 @@
 :root {
-  --bg-dark: #07090f;
-  --bg-card: rgba(19, 23, 34, 0.7);
-  --bg-card-hover: rgba(29, 34, 48, 0.8);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(94, 234, 212, 0.5);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --accent-1: #06b6d4;
-  --accent-2: #3b82f6;
-  --accent-3: #8b5cf6;
+  --bg-dark: #F8FAFC;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-card-hover: rgba(255, 255, 255, 1);
+  --border-color: rgba(220, 38, 38, 0.15);
+  --border-focus: rgba(239, 68, 68, 0.4);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --accent-1: #ef4444;
+  --accent-2: #dc2626;
+  --accent-3: #b91c1c;
   --danger: #ef4444;
   --success: #10b981;
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
   
-  --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(239, 68, 68, 0.15);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -32,8 +32,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    radial-gradient(circle at 15% 50%, rgba(239, 68, 68, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(220, 38, 38, 0.05) 0%, transparent 50%);
   background-attachment: fixed;
 }
 
@@ -110,7 +110,7 @@ input, select { font-family: inherit; }
   display: flex;
   gap: 0.5rem;
   margin-bottom: 2rem;
-  background: rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.7);
   padding: 0.5rem;
   border-radius: 16px;
   border: 1px solid var(--border-color);
@@ -133,8 +133,8 @@ input, select { font-family: inherit; }
 }
 
 .tab:hover {
-  color: var(--text-primary);
-  background: rgba(255,255,255,0.05);
+  color: var(--accent-primary);
+  background: rgba(220, 38, 38, 0.05);
 }
 
 .tab.active {
@@ -151,7 +151,7 @@ input, select { font-family: inherit; }
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -164,7 +164,7 @@ input, select { font-family: inherit; }
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(circle at center, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -190,7 +190,7 @@ input, select { font-family: inherit; }
 
 .file-info {
   margin-top: 1.5rem;
-  background: rgba(0,0,0,0.3);
+  background: rgba(255,255,255,0.8);
   border-radius: 16px;
   padding: 1.5rem;
   border: 1px solid var(--border-color);
@@ -206,8 +206,8 @@ input, select { font-family: inherit; }
 
 .file-icon {
   padding: 1rem;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  border: 1px solid rgba(220, 38, 38, 0.2);
   border-radius: 14px;
   color: var(--accent-2);
 }
@@ -253,7 +253,7 @@ input, select { font-family: inherit; }
 
 .select-input, .text-input {
   width: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.8);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   padding: 0.85rem 1rem;
@@ -266,7 +266,7 @@ input, select { font-family: inherit; }
   cursor: pointer;
 }
 .select-input option {
-  background: var(--bg-dark);
+  background: var(--bg-card);
   color: var(--text-primary);
 }
 

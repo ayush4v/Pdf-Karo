@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --bg-dark: #090B11;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --bg-card-hover: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --text-primary: #ffffff;
-  --text-secondary: #94A3B8;
-  --accent-primary: #e91e63;
-  --accent-secondary: #ff4081;
+  --bg-dark: #F8FAFC;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-card-hover: rgba(255, 255, 255, 1);
+  --border-color: rgba(220, 38, 38, 0.15);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --accent-primary: #dc2626;
+  --accent-secondary: #b91c1c;
   --success: #10B981;
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -21,8 +21,8 @@ body {
   color: var(--text-primary);
   font-family: var(--font-body);
   background-image: 
-    radial-gradient(circle at 50% -20%, rgba(233, 30, 99, 0.15), transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.08), transparent 40%);
+    radial-gradient(circle at 50% -20%, rgba(220, 38, 38, 0.08), transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(220, 38, 38, 0.05), transparent 40%);
   background-attachment: fixed;
   min-height: 100vh;
 }
@@ -43,7 +43,7 @@ body {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
-  background: rgba(9, 11, 17, 0.8);
+  background: rgba(248, 250, 252, 0.8);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   position: sticky;
@@ -71,9 +71,9 @@ body {
   font-weight: 800;
   letter-spacing: -1px;
 }
-.logo-pdf { color: #ffffff; }
-.logo-karo { color: #BBC4FF; } /* Lavender Blue from screenshot */
-.heart-icon { margin-right: 0.1rem; }
+.logo-pdf { color: var(--text-primary); }
+.logo-karo { color: var(--accent-primary); } 
+.heart-icon { margin-right: 0.1rem; color: var(--accent-primary); }
 
 .nav-links {
   display: flex;
@@ -120,7 +120,7 @@ body {
   top: 70px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: #0d0f17;
+  background: #ffffff;
   border: 1px solid var(--border-color);
   border-top: 2px solid var(--accent-primary);
   border-radius: 0 0 20px 20px;
