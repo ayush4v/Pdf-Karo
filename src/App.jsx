@@ -298,8 +298,27 @@ function ToolPage({ id }) {
           doc.addImage(img, f.type === 'image/png' ? 'PNG' : 'JPEG', x, y, w, h);
           URL.revokeObjectURL(url);
         }
-        saveAs(doc.output('blob'), `${files[0]?.name.split('.')[0] || 'converted'}.pdf`);
+        const blob = doc.output('blob');
+        setDownloadLink(URL.createObjectURL(blob));
+        setOutputName(`${files[0]?.name.split('.')[0] || 'converted'}.pdf`);
+        setIsProcessing(false);
         setIsDone(true);
+
+        // Rendering Live Preview
+        setTimeout(async () => {
+          const canvas = document.getElementById('pdf-preview-canvas');
+          if (!canvas) return;
+          try {
+            const dataUrl = URL.createObjectURL(blob);
+            const pdf = await window.pdfjsLib.getDocument(dataUrl).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 1.5 });
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            await page.render({ canvasContext: context, viewport }).promise;
+          } catch (e) { console.error("Preview failed", e); }
+        }, 300);
       } else if (id === 'split') {
         const arrBuffer = await files[0].arrayBuffer();
         const pdf = await PDFDocument.load(arrBuffer);
@@ -423,11 +442,18 @@ function ToolPage({ id }) {
           {isDone && (
             <div className="success-state">
                 <CheckCircle2 size={64} color="#4CAF50" className="success-icon" />
-                <h1>Task complete!</h1>
-                <p>Your document has been processed successfully by {APP_NAME}.</p>
-                <div style={{ marginTop: '2rem' }}>
+                <h1>Task complete! v2.5.2</h1>
+                <p>Check the preview below. No more cut images!</p>
+
+                {/* PDF Live Preview Area */}
+                <div className="pdf-preview-container" style={{ margin: '1.5rem 0', background: '#0a0a0a', border: '1px solid #333', borderRadius: '16px', overflow: 'hidden' }}>
+                   <div style={{ padding: '8px', background: '#111', fontSize: '12px', color: '#888' }}>Live PDF Preview (Page 1)</div>
+                   <canvas id="pdf-preview-canvas" style={{ width: '100%', height: 'auto', display: 'block' }}></canvas>
+                </div>
+                
+                <div style={{ marginTop: '1.5rem' }}>
                     <a href={downloadLink} download={outputName} className="btn-download btn-massive">
-                        Download File
+                        Download Now
                     </a>
                 </div>
                 <button className="btn-secondary" onClick={() => { setFiles([]); setIsDone(false); }}>
