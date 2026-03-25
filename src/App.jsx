@@ -270,7 +270,13 @@ function ToolPage({ id }) {
         saveAs(blob, `${files[0]?.name.split('.')[0] || 'image'}_${APP_NAME}.pdf`);
         setIsDone(true);
       } else if (id === 'jpg-to-pdf') {
-        const pdfDoc = await PDFDocument.create();
+        const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const safeMargin = 50;
+        const targetW = pageWidth - (safeMargin * 2);
+        const targetH = pageHeight - (safeMargin * 2);
+
         for (let i = 0; i < files.length; i++) {
           const f = files[i];
           const url = URL.createObjectURL(f);
@@ -278,34 +284,19 @@ function ToolPage({ id }) {
           img.src = url;
           await new Promise(r => { img.onload = r; });
           
-          // Normalize using Canvas to fix rotation/EXIF issues
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-          const normalizedData = canvas.toDataURL('image/jpeg', 0.9);
-          const image = await pdfDoc.embedJpg(normalizedData);
+          if (i > 0) doc.addPage();
+          else doc.setPage(1);
+
+          const ratio = Math.min(targetW / img.width, targetH / img.height);
+          const w = img.width * ratio;
+          const h = img.height * ratio;
+          const x = (pageWidth - w) / 2;
+          const y = (pageHeight - h) / 2;
+
+          doc.addImage(img, f.type === 'image/png' ? 'PNG' : 'JPEG', x, y, w, h);
           URL.revokeObjectURL(url);
-          
-          // Determine page orientation based on image
-          const isLandscape = img.width > img.height;
-          const pageWidth = isLandscape ? 841.89 : 595.28;
-          const pageHeight = isLandscape ? 595.28 : 841.89;
-          const page = pdfDoc.addPage([pageWidth, pageHeight]);
-          
-          const margin = 30;
-          const { width, height } = image.scaleToFit(pageWidth - margin * 2, pageHeight - margin * 2);
-          
-          page.drawImage(image, {
-            x: (pageWidth - width) / 2,
-            y: (pageHeight - height) / 2,
-            width,
-            height
-          });
         }
-        const pdfBytes = await pdfDoc.save();
-        saveAs(new Blob([pdfBytes]), `${files[0]?.name.split('.')[0] || 'converted'}.pdf`);
+        saveAs(doc.output('blob'), `${files[0]?.name.split('.')[0] || 'converted'}.pdf`);
         setIsDone(true);
       } else if (id === 'split') {
         const arrBuffer = await files[0].arrayBuffer();
