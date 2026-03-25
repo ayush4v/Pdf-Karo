@@ -542,3 +542,9 @@ body {
 }
 
 .ad-container { margin: 2rem 0; border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; min-height: 90px; }
+.v-tag {
+  background: #e91e63;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-left: 5px;
+}

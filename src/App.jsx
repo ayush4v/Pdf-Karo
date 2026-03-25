@@ -293,6 +293,8 @@ function ToolPage({ id }) {
           const x = (pageWidth - w) / 2;
           const y = (pageHeight - h) / 2;
 
+          console.log(`[JPG2PDF] Img: ${img.width}x${img.height}, Scaled: ${w.toFixed(1)}x${h.toFixed(1)}, Pos: ${x.toFixed(1)},${y.toFixed(1)}`);
+
           doc.addImage(img, f.type === 'image/png' ? 'PNG' : 'JPEG', x, y, w, h);
           URL.revokeObjectURL(url);
         }
@@ -502,7 +504,7 @@ export default function App() {
         </div>
 
         <footer className="footer">
-          <p>© {new Date().getFullYear()} {APP_NAME} - Premium Document Tools. Crafted with 💻 for fast offline performance.</p>
+          <p>© {new Date().getFullYear()} {APP_NAME} - <span className="v-tag">v2.5.1 - Fix Active</span> | Powered by Offline Engine</p>
         </footer>
       </div>
     </BrowserRouter>
