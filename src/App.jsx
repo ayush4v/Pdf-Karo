@@ -254,22 +254,6 @@ function ToolPage({ id }) {
         saveAs(blob, `${files[0].name.split('.')[0]}_protected.pdf`);
         setIsDone(true);
       } else if (id === 'jpg-to-pdf') {
-        const doc = new jsPDF({ unit: 'px', format: 'a4' });
-        for (let i = 0; i < files.length; i++) {
-          const f = files[i];
-          const url = URL.createObjectURL(f);
-          const img = new Image();
-          img.src = url;
-          await new Promise(r => { img.onload = r; });
-          if (i > 0) doc.addPage([img.width, img.height], img.width > img.height ? 'l' : 'p');
-          else doc.setPage(1); 
-          doc.addImage(img, f.type === 'image/png' ? 'PNG' : 'JPEG', 0, 0, img.width, img.height);
-          URL.revokeObjectURL(url);
-        }
-        const blob = doc.output('blob');
-        saveAs(blob, `${files[0]?.name.split('.')[0] || 'image'}_${APP_NAME}.pdf`);
-        setIsDone(true);
-      } else if (id === 'jpg-to-pdf') {
         const doc = new jsPDF({ unit: 'pt', format: 'a4' });
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
