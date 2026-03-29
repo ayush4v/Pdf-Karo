@@ -1,0 +1,13 @@
+node_modules
+dist
+outputs
+uploads
+.git
+.vscode
+README.md
+Dockerfile
+.dockerignore
+npm-debug.log
+error-logs.txt
+logs
+.env
