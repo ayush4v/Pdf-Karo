@@ -253,7 +253,16 @@ function ToolPage({ id }) {
         'page-numbers': '/api/page-numbers',
         'jpg-to-pdf': '/api/jpg-to-pdf',
         'compress': '/api/compress',
-        'ocr': '/api/ocr'
+        'ocr': '/api/ocr',
+        'pdf-to-jpg': '/api/pdf-to-jpg',
+        'word-to-pdf': '/api/word-to-pdf',
+        'powerpoint-to-pdf': '/api/ppt-to-pdf',
+        'excel-to-pdf': '/api/excel-to-pdf',
+        'pdf-to-word': '/api/pdf-to-word',
+        'html-to-pdf': '/api/html-to-pdf',
+        'organize': '/api/organize',
+        'sign': '/api/sign',
+        'edit-pdf': '/api/edit'
       };
 
       const endpoint = apiEndpoints[id];
@@ -284,6 +293,7 @@ function ToolPage({ id }) {
         formData.append('text', text);
         formData.append('opacity', watermarkOptions.opacity);
         formData.append('angle', watermarkOptions.angle);
+        formData.append('size', watermarkOptions.size);
       } else if (id === 'page-numbers') {
         formData.append('position', pageNumberOptions.position);
         formData.append('startFrom', pageNumberOptions.startFrom);
@@ -292,6 +302,26 @@ function ToolPage({ id }) {
         const pass = prompt(`Enter the password to ${id === 'protect' ? 'protect' : 'unlock'} this PDF:`);
         if (!pass) { setIsProcessing(false); return; }
         formData.append('password', pass);
+      } else if (id === 'pdf-to-jpg') {
+        formData.append('format', pdfToJpgOptions.format);
+        formData.append('quality', pdfToJpgOptions.quality);
+      } else if (id === 'organize') {
+        const pageOrder = prompt("Enter page order (e.g., 3,1,2,4):", "1,2,3");
+        if (!pageOrder) { setIsProcessing(false); return; }
+        formData.append('pageOrder', pageOrder);
+      } else if (id === 'sign') {
+        const page = prompt("Enter page number for signature:", "1");
+        formData.append('page', page || '1');
+        formData.append('x', '100');
+        formData.append('y', '100');
+      } else if (id === 'edit-pdf') {
+        const page = prompt("Enter page number to edit:", "1");
+        const text = prompt("Enter text to add:", "Sample text");
+        if (!text) { setIsProcessing(false); return; }
+        formData.append('page', page || '1');
+        formData.append('text', text);
+        formData.append('x', '100');
+        formData.append('y', '100');
       }
 
       // Make API call
