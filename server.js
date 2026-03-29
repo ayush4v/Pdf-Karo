@@ -9,6 +9,8 @@ import pkg from 'jspdf';
 const { jsPDF } = pkg;
 import { createWorker } from 'tesseract.js';
 import sharp from 'sharp';
+import * as pdfjsLib from 'pdfjs-dist';
+import { createCanvas } from 'canvas';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -520,27 +522,35 @@ app.post('/api/pdf-to-jpg', upload.single('file'), async (req, res) => {
 
     const { format = 'jpg', dpi = 150 } = req.body;
     const pdfBytes = fs.readFileSync(req.file.path);
-    const pdf = await PDFDocument.load(pdfBytes);
-    const pages = pdf.getPages();
+    
+    // Use pdfjs-dist to render PDF pages
+    const pdfDocument = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes) }).promise;
     const imageUrls = [];
 
-    for (let i = 0; i < pages.length; i++) {
-      const page = pages[i];
-      const { width, height } = page.getSize();
-      const scale = dpi / 72;
-      const pngBytes = await page.render({
-        width: width * scale,
-        height: height * scale,
-      });
+    for (let i = 1; i <= pdfDocument.numPages; i++) {
+      const page = await pdfDocument.getPage(i);
+      const viewport = page.getViewport({ scale: dpi / 72 });
+      
+      // Create canvas
+      const canvas = createCanvas(viewport.width, viewport.height);
+      const context = canvas.getContext('2d');
+      
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+      
+      // Convert to buffer
+      const imageBuffer = canvas.toBuffer('image/png');
       
       let processedImage;
-      if (format === 'png') {
-        processedImage = pngBytes;
+      if (format === 'jpg' || format === 'jpeg') {
+        processedImage = await sharp(imageBuffer).jpeg({ quality: 90 }).toBuffer();
       } else {
-        processedImage = await sharp(pngBytes).jpeg({ quality: 90 }).toBuffer();
+        processedImage = imageBuffer;
       }
       
-      const imagePath = path.join(outputsDir, `page-${i + 1}-${Date.now()}.${format}`);
+      const imagePath = path.join(outputsDir, `page-${i}-${Date.now()}.${format === 'jpg' ? 'jpg' : format}`);
       fs.writeFileSync(imagePath, processedImage);
       imageUrls.push(`/download/${path.basename(imagePath)}`);
     }
@@ -550,7 +560,7 @@ app.post('/api/pdf-to-jpg', upload.single('file'), async (req, res) => {
     res.json({
       success: true,
       downloadUrls: imageUrls,
-      pageCount: pages.length,
+      pageCount: pdfDocument.numPages,
       format: format
     });
   } catch (error) {
