@@ -1,48 +1,36 @@
-# Dockerfile for PdfKaro Deployment
+# Dockerfile for PdfKaro - Hugging Face Spaces
 FROM node:20-slim
 
-# Install system dependencies for Playwright and Office conversion
+# Install system dependencies for Sharp and image processing
 RUN apt-get update && apt-get install -y \
-    libnss3 \
-    libnspr4 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libdbus-1-3 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    fonts-liberation \
-    xdg-utils \
-    wget \
-    libreoffice \
+    libvips-dev \
+    libvips-tools \
+    build-essential \
+    python3 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy package files and install
+# Copy package files first for better caching
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Install Playwright browsers
-RUN npx playwright install --with-deps chromium
-
-# Copy all source
+# Copy all source files
 COPY . .
 
-# Build frontend
+# Build the frontend
 RUN npm run build
 
-# Expose port (Hugging Face listens on 7860 by default)
+# Create necessary directories
+RUN mkdir -p uploads outputs
+
+# Set environment variables for Hugging Face
 ENV PORT=7860
+ENV NODE_ENV=production
+
+# Expose port
 EXPOSE 7860
 
 # Start server
