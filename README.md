@@ -1,16 +1,41 @@
-# React + Vite
+---
+title: PdfKaro
+emoji: 📄
+colorFrom: red
+colorTo: pink
+sdk: docker
+pinned: false
+---
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# PdfKaro - Ultimate PDF Powerhouse
 
-Currently, two official plugins are available:
+A powerful online PDF toolkit with 25+ tools for all your document needs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+### PDF Tools Available:
+- 📑 **Merge PDF** - Combine multiple PDFs
+- ✂️ **Split PDF** - Extract specific pages
+- 🔄 **Rotate PDF** - Rotate pages (90°, 180°, 270°)
+- 🔒 **Protect PDF** - Password encryption
+- 🔓 **Unlock PDF** - Remove password protection
+- 💧 **Watermark** - Add text watermarks
+- 🔢 **Page Numbers** - Add page numbers (6 positions)
+- 📷 **JPG to PDF** - Convert images to PDF
+- 🗜️ **Compress PDF** - Reduce file size
+- 🔍 **OCR** - Extract text from PDFs
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Online Features:
+All tools work server-side with fast processing and secure file handling.
 
-## Expanding the ESLint configuration
+## Technology Stack
+- **Frontend**: React + Vite
+- **Backend**: Node.js + Express
+- **PDF Processing**: pdf-lib, jsPDF
+- **Image Processing**: Sharp
+- **OCR**: Tesseract.js
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Usage
+Upload your files, select the tool, and download the processed result instantly!
+
+**Live Demo**: https://huggingface.co/spaces/ayush447/Pdf-Karo
