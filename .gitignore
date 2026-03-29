@@ -22,7 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
 
 # Data
 uploads
 outputs
+=======
+>>>>>>> 93b3ddba753fdedf2e0ee7d31c06229bc11348d1
